@@ -2,10 +2,10 @@ import { Chat } from "@/components/Chat/Chat";
 import { Footer } from "@/components/Layout/Footer";
 import { Navbar } from "@/components/Layout/Navbar";
 import { Message } from "@/types";
-import { useAuth0 } from "@auth0/auth0-react";
 import { useUser } from '@auth0/nextjs-auth0/client';
 import Head from "next/head";
 import { useEffect, useRef, useState } from "react";
+import LoginPage from "@/components/LogInPage";
 
 export default function Home() {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -91,6 +91,14 @@ export default function Home() {
     ]);
   };
 
+  const handleLogout = () => {
+    // Perform logout logic here
+    // For example, you can redirect the user to the logout endpoint
+    // provided by Auth0 using window.location.href
+
+    window.location.href = "/api/auth/logout";
+  };
+
   useEffect(() => {
     scrollToBottom();
   }, [messages]);
@@ -133,16 +141,16 @@ export default function Home() {
               <div>{authError.message}</div>
             ) : authUser ? (
               <>
-                <a href="/api/auth/logout">Logout</a>
                 <Chat
                   messages={messages}
                   loading={loading}
                   onSend={handleSend}
                   onReset={handleReset}
+                  onLogout={handleLogout}
                 />
               </>
             ) : (
-              <a href="/api/auth/login">Login</a>
+              <LoginPage />
             )}
             <div ref={messagesEndRef} />
           </div>
