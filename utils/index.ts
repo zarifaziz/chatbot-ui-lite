@@ -1,11 +1,7 @@
 import { Message, OpenAIModel } from "@/types";
-import { createParser, ParsedEvent, ReconnectInterval } from "eventsource-parser";
 
 export const OpenAIStream = async (messages: Message[]) => {
-  const encoder = new TextEncoder();
-  const decoder = new TextDecoder();
-
-  const res = await fetch("https://api.openai.com/v1/chat/completions", {
+  const res = await fetch("http://localhost:8000/chat/completions", {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${process.env.OPENAI_API_KEY}`
@@ -22,7 +18,6 @@ export const OpenAIStream = async (messages: Message[]) => {
       ],
       max_tokens: 800,
       temperature: 0.0,
-      stream: true
     })
   });
 
@@ -30,35 +25,11 @@ export const OpenAIStream = async (messages: Message[]) => {
     throw new Error("OpenAI API returned an error");
   }
 
-  const stream = new ReadableStream({
-    async start(controller) {
-      const onParse = (event: ParsedEvent | ReconnectInterval) => {
-        if (event.type === "event") {
-          const data = event.data;
+  // Wait for the entire response to be received
+  const data = await res.json();
 
-          if (data === "[DONE]") {
-            controller.close();
-            return;
-          }
+  // Extract the text from the response
+  const text = data.choices[0].message.content;
 
-          try {
-            const json = JSON.parse(data);
-            const text = json.choices[0].delta.content;
-            const queue = encoder.encode(text);
-            controller.enqueue(queue);
-          } catch (e) {
-            controller.error(e);
-          }
-        }
-      };
-
-      const parser = createParser(onParse);
-
-      for await (const chunk of res.body as any) {
-        parser.feed(decoder.decode(chunk));
-      }
-    }
-  });
-
-  return stream;
+  return text;
 };
