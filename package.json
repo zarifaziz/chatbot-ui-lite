@@ -10,6 +10,8 @@
     "export": "next export"
   },
   "dependencies": {
+    "@auth0/auth0-react": "^2.1.1",
+    "@auth0/nextjs-auth0": "^2.6.2",
     "@tabler/icons-react": "^2.9.0",
     "@types/node": "18.15.0",
     "@types/react": "18.0.28",

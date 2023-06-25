@@ -2,12 +2,16 @@ import { Chat } from "@/components/Chat/Chat";
 import { Footer } from "@/components/Layout/Footer";
 import { Navbar } from "@/components/Layout/Navbar";
 import { Message } from "@/types";
+import { useUser } from '@auth0/nextjs-auth0/client';
 import Head from "next/head";
 import { useEffect, useRef, useState } from "react";
+import LoginPage from "@/components/LogInPage";
 
 export default function Home() {
   const [messages, setMessages] = useState<Message[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
+
+  const { user: authUser, error: authError, isLoading: authIsLoading } = useUser();
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
 
@@ -50,6 +54,8 @@ export default function Home() {
     let isFirst = true;
 
     while (!done) {
+      // read chunks of data from the response body
+      // decode each chunk and append it to the last message
       const { value, done: doneReading } = await reader.read();
       done = doneReading;
       const chunkValue = decoder.decode(value);
@@ -80,9 +86,17 @@ export default function Home() {
     setMessages([
       {
         role: "assistant",
-        content: `Hi there! I'm Chatbot UI, an AI assistant. I can help you with things like answering questions, providing information, and helping with tasks. How can I help you?`
+        content: `Hi there! I'm Alpine, the Pine-Mobile Customer Service assistant. I can help you with things like answering questions, providing information, and pointing you in the right direction. How can I help you?`
       }
     ]);
+  };
+
+  const handleLogout = () => {
+    // Perform logout logic here
+    // For example, you can redirect the user to the logout endpoint
+    // provided by Auth0 using window.location.href
+
+    window.location.href = "/api/auth/logout";
   };
 
   useEffect(() => {
@@ -93,7 +107,7 @@ export default function Home() {
     setMessages([
       {
         role: "assistant",
-        content: `Hi there! I'm Chatbot UI, an AI assistant. I can help you with things like answering questions, providing information, and helping with tasks. How can I help you?`
+        content: `Hi there! I'm Alpine, the Pine-Mobile Customer Service assistant. I can help you with things like answering questions, providing information, and pointing you in the right direction. How can I help you?`
       }
     ]);
   }, []);
@@ -101,10 +115,10 @@ export default function Home() {
   return (
     <>
       <Head>
-        <title>Chatbot UI</title>
+        <title>Alpine Chatbot</title>
         <meta
           name="description"
-          content="A simple chatbot starter kit for OpenAI's chat model using Next.js, TypeScript, and Tailwind CSS."
+          content="I'm Alpine, the Pine-Mobile Customer Service assistant. Ask me anything."
         />
         <meta
           name="viewport"
@@ -121,12 +135,23 @@ export default function Home() {
 
         <div className="flex-1 overflow-auto sm:px-10 pb-4 sm:pb-10">
           <div className="max-w-[800px] mx-auto mt-4 sm:mt-12">
-            <Chat
-              messages={messages}
-              loading={loading}
-              onSend={handleSend}
-              onReset={handleReset}
-            />
+            {authIsLoading ? (
+              <div>Loading...</div>
+            ) : authError ? (
+              <div>{authError.message}</div>
+            ) : authUser ? (
+              <>
+                <Chat
+                  messages={messages}
+                  loading={loading}
+                  onSend={handleSend}
+                  onReset={handleReset}
+                  onLogout={handleLogout}
+                />
+              </>
+            ) : (
+              <LoginPage />
+            )}
             <div ref={messagesEndRef} />
           </div>
         </div>
