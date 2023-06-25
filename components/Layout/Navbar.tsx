@@ -6,7 +6,7 @@ export const Navbar: FC = () => {
       <div className="font-bold text-3xl flex items-center">
         <a
           className="ml-2 hover:opacity-50"
-          href="https://chatbot-ui-lite-orpin-five.vercel.app/"
+          href="https://welcome-to-alpine.vercel.app/"
         >
           Alpine
         </a>
