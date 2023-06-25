@@ -1,14 +1,13 @@
 import { Message, OpenAIModel } from "@/types";
 
 export const OpenAIStream = async (messages: Message[]) => {
-  const res = await fetch("http://localhost:8000/chat/completions", {
+  const res = await fetch("https://5a77-2001-8003-23ae-f100-a887-a259-7ed2-a9a4.ngrok-free.app/agent_chat", {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${process.env.OPENAI_API_KEY}`
     },
     method: "POST",
     body: JSON.stringify({
-      model: OpenAIModel.DAVINCI_TURBO,
       messages: [
         {
           role: "system",
@@ -16,8 +15,6 @@ export const OpenAIStream = async (messages: Message[]) => {
         },
         ...messages
       ],
-      max_tokens: 800,
-      temperature: 0.0,
     })
   });
 
@@ -29,7 +26,7 @@ export const OpenAIStream = async (messages: Message[]) => {
   const data = await res.json();
 
   // Extract the text from the response
-  const text = data.choices[0].message.content;
+  const text = data.message.content;
 
   return text;
 };
