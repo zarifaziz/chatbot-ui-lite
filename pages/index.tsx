@@ -135,9 +135,7 @@ export default function Home() {
 
         <div className="flex-1 overflow-auto sm:px-10 pb-4 sm:pb-10">
           <div className="max-w-[800px] mx-auto mt-4 sm:mt-12">
-            {authIsLoading ? (
-              <div>Loading...</div>
-            ) : authError ? (
+            {authError ? (
               <div>{authError.message}</div>
             ) : authUser ? (
               <>
