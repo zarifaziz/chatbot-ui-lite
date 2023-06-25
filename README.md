@@ -37,6 +37,6 @@ npm i
 npm run dev
 ```
 
-**4. Start Building**
+**4. Start Chatting**
 
 You should be able to start chatting with the bot.
