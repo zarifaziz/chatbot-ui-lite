@@ -6,6 +6,7 @@ import { useUser } from '@auth0/nextjs-auth0/client';
 import Head from "next/head";
 import { useEffect, useRef, useState } from "react";
 import LoginPage from "@/components/LogInPage";
+import { PageLoader } from "@/components/page-loader";
 
 export default function Home() {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -136,7 +137,9 @@ export default function Home() {
         <div className="flex-1 overflow-auto sm:px-10 pb-4 sm:pb-10">
           <div className="max-w-[800px] mx-auto mt-4 sm:mt-12">
             {authIsLoading ? (
-              <div>Loading...</div>
+              <div>
+                <PageLoader />
+              </div>
             ) : authError ? (
               <div>{authError.message}</div>
             ) : authUser ? (
