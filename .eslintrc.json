@@ -1,3 +1,7 @@
 {
-  "extends": "next/core-web-vitals"
+  "extends": "next/core-web-vitals",
+  "rules": {
+    // enabling use of <a> tag needed for auth0
+    "@next/next/no-html-link-for-pages": "off"
+  }
 }
