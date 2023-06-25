@@ -1,7 +1,7 @@
 import { Message, OpenAIModel } from "@/types";
 
 export const OpenAIStream = async (messages: Message[]) => {
-  const res = await fetch("https://5a77-2001-8003-23ae-f100-a887-a259-7ed2-a9a4.ngrok-free.app/agent_chat", {
+  const res = await fetch("https://1e7uw0zi2b.execute-api.ap-southeast-2.amazonaws.com/prod/agent_chat", {
     headers: {
       "Content-Type": "application/json",
       Authorization: `Bearer ${process.env.OPENAI_API_KEY}`
