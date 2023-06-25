@@ -99,9 +99,9 @@ export default function Home() {
     window.location.href = "/api/auth/logout";
   };
 
-  useEffect(() => {
-    scrollToBottom();
-  }, [messages]);
+  // useEffect(() => {
+  //   scrollToBottom();
+  // }, [messages]);
 
   useEffect(() => {
     setMessages([
