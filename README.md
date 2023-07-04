@@ -2,10 +2,9 @@
 
 A Chatbot for Customer Service Agents using Next.js, TypeScript, and Tailwind CSS, and Auth0.
 
-See a [demo](https://youtu.be/o4nPTXq9EpM).
+See a the full demo on Youtube [here](https://youtu.be/o4nPTXq9EpM).
 
-![Chatbot Welcome Page](./public/welcome.png)
-![Chatbot Chat Example](./public/chat.png)
+![Demo GIF](./public/demo.gif)
 
 ## Features
 - Our backend is powered by Python, utilizing AWS and Lambda, while FastAPI serves as the middleware.
